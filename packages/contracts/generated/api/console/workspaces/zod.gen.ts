@@ -428,6 +428,20 @@ export const zResourceWhitelist = z.object({
 })
 
 /**
+ * _ResourceAccessScopeRequest
+ */
+export const zResourceAccessScopeRequest = z.object({
+  automatic_include_workspace_members: z.boolean(),
+})
+
+/**
+ * ResourceWhitelistConfig
+ */
+export const zResourceWhitelistConfig = z.object({
+  automatic_include_workspace_members: z.boolean(),
+})
+
+/**
  * _ReplaceMemberRolesRequest
  */
 export const zReplaceMemberRolesRequest = z.object({
@@ -727,7 +741,7 @@ export const zTriggerSubscriptionBuilderCreatePayload = z.object({
  * TriggerSubscriptionBuilderVerifyPayload
  */
 export const zTriggerSubscriptionBuilderVerifyPayload = z.object({
-  credentials: z.record(z.string(), z.unknown()),
+  credentials: z.record(z.string(), z.unknown()).nullish(),
 })
 
 /**
@@ -742,6 +756,13 @@ export const zTriggerVerificationResponse = z.object({
  */
 export const zTriggerProviderErrorResponse = z.object({
   error: z.string(),
+})
+
+/**
+ * TriggerSubscriptionVerifyPayload
+ */
+export const zTriggerSubscriptionVerifyPayload = z.object({
+  credentials: z.record(z.string(), z.unknown()),
 })
 
 /**
@@ -1323,20 +1344,6 @@ export const zAccessPolicyRoleBinding = z.object({
  */
 export const zRoleBindingsResponse = z.object({
   data: z.array(zAccessPolicyRoleBinding).optional(),
-})
-
-/**
- * RBACResourceWhitelistScope
- *
- * Whitelist scopes accepted by RBAC app and dataset access config APIs.
- */
-export const zRbacResourceWhitelistScope = z.enum(['all', 'only_me', 'specific'])
-
-/**
- * _ResourceAccessScopeRequest
- */
-export const zResourceAccessScopeRequest = z.object({
-  scope: zRbacResourceWhitelistScope,
 })
 
 /**
@@ -2514,7 +2521,7 @@ export const zResourceUserAccessPolicies = z.object({
  */
 export const zResourceUserAccessPoliciesResponse = z.object({
   data: z.array(zResourceUserAccessPolicies).optional(),
-  scope: zRbacResourceWhitelistScope,
+  pagination: zPagination.nullish(),
 })
 
 /**
@@ -4948,6 +4955,9 @@ export const zGetWorkspacesCurrentRbacAppsByAppIdUserAccessPoliciesPath = z.obje
 
 export const zGetWorkspacesCurrentRbacAppsByAppIdUserAccessPoliciesQuery = z.object({
   language: z.enum(['en', 'ja', 'zh']).optional(),
+  limit: z.int().gte(1).lte(99999).optional(),
+  page: z.int().gte(1).optional(),
+  reverse: z.boolean().optional(),
 })
 
 /**
@@ -4990,6 +5000,15 @@ export const zPutWorkspacesCurrentRbacAppsByAppIdWhitelistPath = z.object({
  * Success
  */
 export const zPutWorkspacesCurrentRbacAppsByAppIdWhitelistResponse = zResourceWhitelist
+
+export const zGetWorkspacesCurrentRbacAppsByAppIdWhitelistConfigPath = z.object({
+  app_id: z.uuid(),
+})
+
+/**
+ * Success
+ */
+export const zGetWorkspacesCurrentRbacAppsByAppIdWhitelistConfigResponse = zResourceWhitelistConfig
 
 export const zDeleteWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyIdMemberBindingsBody =
   zDeleteMemberBindingsRequest
@@ -5049,6 +5068,9 @@ export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdUserAccessPoliciesPath 
 
 export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdUserAccessPoliciesQuery = z.object({
   language: z.enum(['en', 'ja', 'zh']).optional(),
+  limit: z.int().gte(1).lte(99999).optional(),
+  page: z.int().gte(1).optional(),
+  reverse: z.boolean().optional(),
 })
 
 /**
@@ -5091,6 +5113,16 @@ export const zPutWorkspacesCurrentRbacDatasetsByDatasetIdWhitelistPath = z.objec
  * Success
  */
 export const zPutWorkspacesCurrentRbacDatasetsByDatasetIdWhitelistResponse = zResourceWhitelist
+
+export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdWhitelistConfigPath = z.object({
+  dataset_id: z.uuid(),
+})
+
+/**
+ * Success
+ */
+export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdWhitelistConfigResponse =
+  zResourceWhitelistConfig
 
 export const zGetWorkspacesCurrentRbacMembersByMemberIdRbacRolesPath = z.object({
   member_id: z.uuid(),
@@ -6022,7 +6054,7 @@ export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsOauthAut
   zTriggerOAuthAuthorizeResponse
 
 export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsVerifyBySubscriptionIdBody =
-  zTriggerSubscriptionBuilderVerifyPayload
+  zTriggerSubscriptionVerifyPayload
 
 export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsVerifyBySubscriptionIdPath =
   z.object({

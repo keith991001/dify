@@ -12868,7 +12868,7 @@ Import a Skill zip package from multipart form field `file`.
 
 | Required | Schema |
 | -------- | ------ |
-|  Yes | **application/json**: [TriggerSubscriptionBuilderVerifyPayload](#triggersubscriptionbuilderverifypayload)<br> |
+|  Yes | **application/json**: [TriggerSubscriptionVerifyPayload](#triggersubscriptionverifypayload)<br> |
 
 #### Responses
 
@@ -23467,6 +23467,12 @@ The identity of the trigger provider
 | properties | object |  | No |
 
 #### TriggerSubscriptionBuilderVerifyPayload
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| credentials | object |  | No |
+
+#### TriggerSubscriptionVerifyPayload
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
