@@ -114,5 +114,8 @@
   "skillManagement.searchLabel": "Search skills",
   "skillManagement.searchPlaceholder": "Search",
   "skillManagement.tags": "Tags",
-  "skillManagement.title": "Skills"
+  "skillManagement.title": "Skills",
+  "skillManagement.detail.fileCount": "{{count}} FILES",
+  "skillManagement.detail.referencedBy": "Referenced by {{count}} Apps",
+  "skillManagement.referenceCount": "{{count}} Refs"
 }

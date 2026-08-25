@@ -694,7 +694,10 @@ describe('MainNav', () => {
     expect(skillsLink.querySelector('.i-custom-vender-main-nav-skill')).toBeInTheDocument()
     const knowledgeLink = screen.getByRole('link', { name: /common.menus.datasets/ })
     expect(knowledgeLink).toHaveAttribute('href', '/datasets')
-    expect(knowledgeLink.querySelector('.i-custom-vender-main-nav-knowledge-v2')).toBeInTheDocument()
+    expect(
+      knowledgeLink.querySelector('.i-custom-vender-main-nav-knowledge-v2'),
+    ).toBeInTheDocument()
+
     const integrationsLink = screen.getByRole('link', { name: /common.mainNav.integrations/ })
     expect(integrationsLink).toHaveAttribute('href', '/integrations/model-provider')
     expect(

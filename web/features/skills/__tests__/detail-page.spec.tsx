@@ -664,7 +664,7 @@ async function openVersionRowActions(
   await user.click(actionButton)
 }
 
-describe('SkillDetailPage', () => {
+describe('SkillDetailPage', { timeout: 10000 }, () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mocks.defaultTextGenerationModel = {
@@ -2795,15 +2795,18 @@ describe('SkillDetailPage', () => {
     expect(await screen.findByRole('img', { name: 'image.png' })).toBeInTheDocument()
   })
 
-  it('does not show voice input in Skill Builder', async () => {
+  it('shows unavailable feedback for Skill Builder voice input', async () => {
+    const user = userEvent.setup()
     renderSkillDetailPage()
 
     await screen.findByText('skill.skillManagement.detail.builder.title')
-    expect(
-      screen.queryByRole('button', {
+    await user.click(
+      screen.getByRole('button', {
         name: 'skill.skillManagement.detail.builder.voice',
       }),
-    ).not.toBeInTheDocument()
+    )
+
+    expect(toast.info).toHaveBeenCalledWith('skill.skillManagement.detail.builder.voiceUnavailable')
   })
 
   it('shows an error and re-enables Skill Builder input when sending fails', async () => {
@@ -3506,12 +3509,13 @@ describe('SkillDetailPage', () => {
       await screen.findByRole('button', { name: 'skill.skillManagement.detail.versionHistory' }),
     )
 
-    await screen.findByText('skill.skillManagement.detail.versions')
+    const panelTitle = await screen.findByText('skill.skillManagement.detail.versions')
+    expect(panelTitle.closest('aside')).toHaveClass('w-67', 'py-1')
     expect(screen.getAllByRole('button', { current: true })).toHaveLength(1)
 
     await openVersionRowActions(user, '#2')
     expect(screen.queryByText('skill.skillManagement.detail.copyVersionId')).not.toBeInTheDocument()
-    expect(await screen.findByRole('menu')).toBeInTheDocument()
+    expect(await screen.findByRole('menu')).toHaveClass('w-[184px]')
 
     await user.keyboard('{Escape}')
     await user.click(

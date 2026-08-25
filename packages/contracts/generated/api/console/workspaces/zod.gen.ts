@@ -782,6 +782,28 @@ export const zSwitchWorkspacePayload = z.object({
 })
 
 /**
+ * TenantListItemResponse
+ */
+export const zCloudPlan = z.enum(['professional', 'sandbox', 'team'])
+
+export const zTenantListItemResponse = z.object({
+  created_at: z.int().nullish(),
+  current: z.boolean(),
+  id: z.string(),
+  last_opened_at: z.int().nullish(),
+  name: z.string().nullish(),
+  plan: zCloudPlan.nullish(),
+  status: z.string().nullish(),
+})
+
+/**
+ * TenantListResponse
+ */
+export const zTenantListResponse = z.object({
+  workspaces: z.array(zTenantListItemResponse),
+})
+
+/**
  * AgentSkillBindingItemResponse
  */
 export const zAgentSkillBindingItemResponse = z.object({
@@ -1582,37 +1604,6 @@ export const zSkillReferenceResponse = z.object({
  */
 export const zSkillReferenceListResponse = z.object({
   data: z.array(zSkillReferenceResponse).optional(),
-})
-
-/**
- * CloudPlan
- *
- * Enum representing user plan types in the cloud platform.
- *
- * SANDBOX: Free/default plan with limited features
- * PROFESSIONAL: Professional paid plan
- * TEAM: Team collaboration paid plan
- */
-export const zCloudPlan = z.enum(['professional', 'sandbox', 'team'])
-
-/**
- * TenantListItemResponse
- */
-export const zTenantListItemResponse = z.object({
-  created_at: z.int().nullish(),
-  current: z.boolean(),
-  id: z.string(),
-  last_opened_at: z.int().nullish(),
-  name: z.string().nullish(),
-  plan: zCloudPlan.nullish(),
-  status: z.string().nullish(),
-})
-
-/**
- * TenantListResponse
- */
-export const zTenantListResponse = z.object({
-  workspaces: z.array(zTenantListItemResponse),
 })
 
 /**
@@ -2925,6 +2916,8 @@ export const zToolParameterType = z.enum([
   'array',
   'boolean',
   'checkbox',
+  'date',
+  'date-range',
   'dynamic-select',
   'file',
   'files',

@@ -18,6 +18,7 @@ export type MainNavRouteConfig = {
 export type MainNavRouteVisibilityOptions = {
   agentV2Enabled: boolean
   canManageAgents: boolean
+  canUseAppDeploy?: boolean
   isCurrentWorkspaceDatasetOperator: boolean
   marketplaceEnabled: boolean
 }
@@ -29,6 +30,8 @@ export type DetailSidebarVisibilityOptions = Pick<
 
 const VISIBLE_TO_ALL: MainNavRouteVisibility = () => true
 const CAN_MANAGE_AGENTS: MainNavRouteVisibility = (options) => options.canManageAgents
+export const CAN_USE_APP_DEPLOY: MainNavRouteVisibility = (options) =>
+  Boolean(options.canUseAppDeploy)
 const NOT_DATASET_OPERATOR: MainNavRouteVisibility = (options) =>
   !options.isCurrentWorkspaceDatasetOperator
 

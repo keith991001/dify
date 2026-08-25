@@ -114,5 +114,8 @@
   "skillManagement.searchLabel": "搜尋 Skill",
   "skillManagement.searchPlaceholder": "搜索",
   "skillManagement.tags": "標籤",
-  "skillManagement.title": "Skills"
+  "skillManagement.title": "Skills",
+  "skillManagement.detail.fileCount": "{{count}} 個檔案",
+  "skillManagement.detail.referencedBy": "被 {{count}} 個應用引用",
+  "skillManagement.referenceCount": "{{count}} 個引用"
 }
