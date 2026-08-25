@@ -681,29 +681,29 @@ describe('MainNav', () => {
     )
     const homeLink = screen.getByRole('link', { name: /common.mainNav.home/ })
     expect(homeLink).toHaveAttribute('href', '/')
-    expect(homeLink.querySelector('.i-custom-vender-main-nav-home')).toBeInTheDocument()
+    expect(homeLink.querySelector('.i-custom-vender-main-nav-home-v2')).toBeInTheDocument()
     const studioLink = screen.getByRole('link', { name: /common.menus.apps/ })
     expect(studioLink).toHaveAttribute('href', '/apps')
-    expect(studioLink.querySelector('.i-custom-vender-main-nav-studio')).toBeInTheDocument()
+    expect(studioLink.querySelector('.i-custom-vender-main-nav-studio-v2')).toBeInTheDocument()
     const agentsLink = screen.getByRole('link', { name: /Agents/ })
     expect(agentsLink).toHaveAttribute('href', '/agents')
     expect(screen.getByRole('link', { name: /Agents common.menus.status/ })).toBeInTheDocument()
-    expect(agentsLink.querySelector('.i-custom-vender-main-nav-roster')).toBeInTheDocument()
+    expect(agentsLink.querySelector('.i-custom-vender-main-nav-agent')).toBeInTheDocument()
     const skillsLink = screen.getByRole('link', { name: /common.mainNav.skills/ })
     expect(skillsLink).toHaveAttribute('href', '/skills')
     expect(skillsLink.querySelector('.i-custom-vender-main-nav-skill')).toBeInTheDocument()
     const knowledgeLink = screen.getByRole('link', { name: /common.menus.datasets/ })
     expect(knowledgeLink).toHaveAttribute('href', '/datasets')
-    expect(knowledgeLink.querySelector('.i-custom-vender-main-nav-knowledge')).toBeInTheDocument()
+    expect(knowledgeLink.querySelector('.i-custom-vender-main-nav-knowledge-v2')).toBeInTheDocument()
     const integrationsLink = screen.getByRole('link', { name: /common.mainNav.integrations/ })
     expect(integrationsLink).toHaveAttribute('href', '/integrations/model-provider')
     expect(
-      integrationsLink.querySelector('.i-custom-vender-main-nav-integrations'),
+      integrationsLink.querySelector('.i-custom-vender-main-nav-integrations-v2'),
     ).toBeInTheDocument()
     const marketplaceLink = screen.getByRole('link', { name: /common.mainNav.marketplace/ })
     expect(marketplaceLink).toHaveAttribute('href', '/marketplace')
     expect(
-      marketplaceLink.querySelector('.i-custom-vender-main-nav-marketplace'),
+      marketplaceLink.querySelector('.i-custom-vender-main-nav-marketplace-v2'),
     ).toBeInTheDocument()
   })
 
@@ -1136,8 +1136,8 @@ describe('MainNav', () => {
       'common.mainNav.help.learnDify',
       'common.mainNav.help.stepByStepTour',
       'common.userProfile.compliance',
-      'common.userProfile.forum',
-      'common.userProfile.community',
+      'common.userProfile.discord',
+      'common.mainNav.help.creatorCenter',
       'common.userProfile.github',
       'common.userProfile.about',
     ]
@@ -1220,7 +1220,7 @@ describe('MainNav', () => {
     fireEvent.click(contactUsItem)
 
     await waitFor(() => {
-      expect(screen.queryByText('common.userProfile.forum')).not.toBeInTheDocument()
+      expect(screen.queryByText('common.userProfile.discord')).not.toBeInTheDocument()
     })
     expect(mockSetShowPricingModal).toHaveBeenCalled()
   })
