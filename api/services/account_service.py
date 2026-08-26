@@ -1319,7 +1319,12 @@ class TenantService:
 
     @staticmethod
     def create_tenant_member(
-        tenant: Tenant, account: Account, session: Session, role: str = "normal"
+        tenant: Tenant,
+        account: Account,
+        session: Session,
+        role: str = "normal",
+        *,
+        operator_account_id: str | None = None,
     ) -> TenantAccountJoin:
         """Create tenant member"""
         if role == TenantAccountRole.OWNER:
@@ -1334,13 +1339,23 @@ class TenantService:
         )
         if ta:
             ta.role = TenantAccountRole(role)
+            membership_created = False
         else:
             ta = TenantAccountJoin(tenant_id=tenant.id, account_id=account.id, role=TenantAccountRole(role))
             session.add(ta)
+            membership_created = True
 
         session.commit()
         if dify_config.DEPLOYMENT_EDITION == DeploymentEdition.CLOUD:
             BillingService.clean_billing_info_cache(tenant.id)
+        if membership_created and dify_config.RBAC_ENABLED and TenantAccountRole(role) != TenantAccountRole.OWNER:
+            from tasks.initialize_created_app_rbac_access_task import sync_joined_workspace_member_rbac_access_task
+
+            sync_joined_workspace_member_rbac_access_task.delay(
+                str(tenant.id),
+                str(account.id),
+                operator_account_id=operator_account_id,
+            )
         return ta
 
     @staticmethod
@@ -2020,7 +2035,13 @@ class RegisterService:
                 check_normalized_email=True,
                 session=session,
             )
-            TenantService.create_tenant_member(tenant, account, session, tenant_join_role)
+            TenantService.create_tenant_member(
+                tenant,
+                account,
+                session,
+                tenant_join_role,
+                operator_account_id=inviter.id,
+            )
             TenantService.switch_tenant(account, tenant.id, session=session)
             requires_setup = True
         else:
@@ -2033,7 +2054,13 @@ class RegisterService:
             requires_setup = account.status == AccountStatus.PENDING
 
             if not ta and (account.status == AccountStatus.PENDING or dify_config.RBAC_ENABLED):
-                TenantService.create_tenant_member(tenant, account, session, tenant_join_role)
+                TenantService.create_tenant_member(
+                    tenant,
+                    account,
+                    session,
+                    tenant_join_role,
+                    operator_account_id=inviter.id,
+                )
 
             # Support resend invitation email when the account is pending status
             if account.status != AccountStatus.PENDING:
