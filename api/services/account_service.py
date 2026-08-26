@@ -1348,7 +1348,13 @@ class TenantService:
         session.commit()
         if dify_config.DEPLOYMENT_EDITION == DeploymentEdition.CLOUD:
             BillingService.clean_billing_info_cache(tenant.id)
-        if membership_created and dify_config.RBAC_ENABLED and TenantAccountRole(role) != TenantAccountRole.OWNER:
+
+        if (
+            membership_created
+            and dify_config.RBAC_ENABLED
+            and TenantAccountRole(role) != TenantAccountRole.OWNER
+            and account.status != AccountStatus.PENDING
+        ):
             from tasks.initialize_created_app_rbac_access_task import sync_joined_workspace_member_rbac_access_task
 
             sync_joined_workspace_member_rbac_access_task.delay(
