@@ -242,6 +242,7 @@ class TestChatAppRunner:
         app_config = SimpleNamespace(
             app_id="app-1",
             tenant_id="tenant-1",
+            app_mode=AppMode.CHAT,
             prompt_template=None,
             external_data_variables=[],
             dataset=None,
@@ -277,6 +278,7 @@ class TestChatAppRunner:
         app_config = SimpleNamespace(
             app_id="app-1",
             tenant_id="tenant-1",
+            app_mode=AppMode.CHAT,
             prompt_template=None,
             external_data_variables=[],
             dataset=None,
@@ -351,6 +353,7 @@ class TestChatAppRunner:
         app_config = SimpleNamespace(
             app_id="app-1",
             tenant_id="tenant-1",
+            app_mode=AppMode.CHAT,
             prompt_template=None,
             external_data_variables=[],
             dataset=None,

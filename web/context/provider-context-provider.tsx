@@ -47,6 +47,7 @@ export const ProviderContextProvider = ({ children }: ProviderContextProviderPro
     deploymentEdition,
     enabled: features?.education.enabled,
   })
+  const enableSkill = features?.enable_skill ?? false
   const enableReplaceWebAppLogo = features?.can_replace_logo ?? false
   const modelLoadBalancingEnabled = features?.model_load_balancing_enabled ?? false
   const webappCopyrightEnabled = features?.webapp_copyright_enabled ?? false
@@ -101,6 +102,7 @@ export const ProviderContextProvider = ({ children }: ProviderContextProviderPro
         isFetchedPlan,
         isFetchedPlanInfo,
         enableBilling,
+        enableSkill,
         onPlanInfoChanged: refreshFeatures,
         enableReplaceWebAppLogo,
         modelLoadBalancingEnabled,
