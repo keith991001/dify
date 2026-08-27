@@ -27,6 +27,7 @@ from services.account_activation_adapters import (
     BillingAccountActivationEligibility,
     BillingWorkspaceMembershipCache,
     DeploymentWorkspaceInvitePolicy,
+    RBACWorkspaceMemberAccessSync,
     RegisterServiceInvitationTokenStore,
 )
 from services.account_avatar_file_gateway import SQLAlchemyAccountAvatarFileGateway
@@ -134,6 +135,7 @@ def test_build_application_services_configures_setup_policy(
     )
 
     assert services.setup.get_status().completed is setup_completed
+    assert services.oauth_server is not None
 
 
 def test_build_application_services_wires_builtin_schema_definitions(
@@ -391,6 +393,7 @@ def test_build_application_services_wires_account_activation(
     assert activation._eligibility._enabled is billing_enabled
     assert isinstance(activation._membership_cache, BillingWorkspaceMembershipCache)
     assert activation._membership_cache._enabled is billing_enabled
+    assert isinstance(activation._member_access_sync, RBACWorkspaceMemberAccessSync)
 
 
 def test_build_application_services_wires_data_source_api_key_auth(
